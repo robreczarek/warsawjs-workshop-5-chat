@@ -47,16 +47,21 @@ connection.on('login', function({ result }) {
 });
 
 function sendLogin() {
-  if (!connection.socket) {
+  if (!connected) {
     connection.connect();
+  } else {
+    connection.emit('login', credentials);
   }
-  connection.emit('login', credentials);
 }
 
 function sendDisconnect() {
   connected = false;
   credentials = null;
   connection.disconnect();
+}
+
+function sendRegistration(login, password) {
+  connection.emit('registration', { login, password });
 }
 
 // ## Input handling
@@ -80,6 +85,10 @@ const commandHandlers = {
 
   showDetails: function() {
     console.log(credentials);
+  },
+
+  register: function(login, password) {
+    sendRegistration(login, password);
   }
 }
 
