@@ -13,23 +13,23 @@ const EOL = require('os').EOL;
 const url = `http://${config.server}:${config.socketPort}`;
 const connection = require('socket.io-client')(url);
 
-// TODO: Define a variable keeping login/password sent on every connect.
-
-let credentials = {
-  login: 'anon-' + Math.round(Math.random() * 100),
-  password: null
-}
+// User data
+let credentials = null;
+let connected = false;
 
 // Fire off a message to the client when they connect
 connection.on('connect', function() {
-  
+  connected = true;
   writeLine('* Connected to the chat server.');
-  
   if (credentials) {
     sendLogin();
   }
+});
 
-})
+connection.on('disconnect', function() {
+  connected = false;
+  writeLine('* Disconnected from the chat server.');
+});
 
 // Print a message when it is received from the server
 connection.on('message', function({ from, body }) {
@@ -39,16 +39,20 @@ connection.on('message', function({ from, body }) {
 // Login related communication
 connection.on('login', function({ result }) {
   if (result === true) {
+    rl.setPrompt(`${credentials.login}> `);
     writeLine('* Successfully logged in.');
   } else {
     writeLine('* Failed to log in.');
   }
-})
+});
 
 function sendLogin() {
   connection.emit('login', credentials);
 }
 
+function sendDisconnect() {
+  connection.emit('disconnect', credentials);
+}
 
 // ## Input handling
 const rl = readline.createInterface({
@@ -60,7 +64,13 @@ rl.setPrompt('> ');
 rl.prompt();
 
 const commandHandlers = {
-  login: function handleLogin(login, password) {
+  disconnect: function() {
+    sendDisconnect();
+    connected = false;
+    credentials = null;
+    rl.setPrompt('> ');
+  },
+  login: function(login, password) {
     credentials = { login, password };
     sendLogin();
   },
