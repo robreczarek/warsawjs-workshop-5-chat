@@ -1,10 +1,22 @@
 'use strict';
 
-const connection = require('socket.io-client')('http://localhost:3000');
+// Util realated
+const yaml = require('js-yaml');
+const fs   = require('fs');
+var config = yaml.safeLoad(fs.readFileSync('./config/client.yaml', 'utf8'));
+
 const readline = require('readline');
 const util = require('util');
-
 const EOL = require('os').EOL;
+
+const url = `http://${config.server}:${config.socketPort}`;
+
+const connection = require('socket.io-client')(url);
+
+
+connection.on('connect', function() {
+  writeLine('* Connected to the chat server.')
+})
 
 connection.on('message', function({ from, body }) {
   writeLine('%s: %s', from, body);
@@ -23,6 +35,7 @@ connection.emit('login', {
   password: ''
 })
 
+// Input handling
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout

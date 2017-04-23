@@ -1,0 +1,3 @@
+---
+server: 'localhost'
+socketPort: 3000
