@@ -74,6 +74,10 @@ function sendRegistration(login, password) {
   connection.emit('registration', { login, password });
 }
 
+function sendUnregistration(login, password) {
+  connection.emit('unregistration', { login, password });
+}
+
 const commandHandlers = {
 
   login: function(login, password) {
@@ -92,6 +96,10 @@ const commandHandlers = {
 
   showDetails: function() {
     console.log(credentials);
+  },
+
+  unregister: function(login, password) {
+    sendUnregistration(login, password);
   }
 
 }
