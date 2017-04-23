@@ -47,11 +47,16 @@ connection.on('login', function({ result }) {
 });
 
 function sendLogin() {
+  if (!connection.socket) {
+    connection.connect();
+  }
   connection.emit('login', credentials);
 }
 
 function sendDisconnect() {
-  connection.emit('disconnect', credentials);
+  connected = false;
+  credentials = null;
+  connection.disconnect();
 }
 
 // ## Input handling
@@ -66,8 +71,6 @@ rl.prompt();
 const commandHandlers = {
   disconnect: function() {
     sendDisconnect();
-    connected = false;
-    credentials = null;
     rl.setPrompt('> ');
   },
   login: function(login, password) {
