@@ -1,4 +1,5 @@
-"use strict";
+'use strict';
+
 const connection = require('socket.io-client')('http://localhost:3000');
 const readline = require('readline');
 const util = require('util');
