@@ -6,9 +6,22 @@ const util = require('util');
 
 const EOL = require('os').EOL;
 
-connection.on('message', function({ body }) {
-  writeLine('* Server says: %s', body);
+connection.on('message', function({ from, body }) {
+  writeLine('%s: %s', from, body);
 });
+
+connection.on('login', function({ result }) {
+  if (result === true) {
+    writeLine('* Successfully logged in.');
+  } else {
+    writeLine('* Failed to log in.')
+  }
+})
+
+connection.emit('login', {
+  login: 'user-' + Math.round(Math.random() * 100),
+  password: ''
+})
 
 const rl = readline.createInterface({
   input: process.stdin,
