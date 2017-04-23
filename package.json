@@ -1,0 +1,23 @@
+{
+  "name": "warsawjs-workshop-5-chat",
+  "version": "0.0.1",
+  "description": "Project created during 5th WarsawJS workshop session.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robreczarek/warsawjs-workshop-5-chat.git"
+  },
+  "author": "Robert Obreczarek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robreczarek/warsawjs-workshop-5-chat/issues"
+  },
+  "homepage": "https://github.com/robreczarek/warsawjs-workshop-5-chat#readme",
+  "dependencies": {
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
+  }
+}
