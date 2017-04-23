@@ -1,5 +1,12 @@
-var io = require('socket.io')(3000);
+"use strict";
+const io = require('socket.io')(3000);
 
 io.on('connection', function (socket) {
-  socket.emit('message', { body: 'Hello, client! Now, to the moon!' });
+
+  let login = null;
+
+  socket.on('message', function( { body } ) {
+    io.sockets.emit('message', { body });
+  });
+  
 });
