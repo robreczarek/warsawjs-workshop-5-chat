@@ -17,6 +17,16 @@ const connection = require('socket.io-client')(url);
 let credentials = null;
 let connected = false;
 
+// ## Input handling
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+// UI
+rl.setPrompt('> ');
+rl.prompt();
+
 // Fire off a message to the client when they connect
 connection.on('connect', function() {
   connected = true;
@@ -64,32 +74,26 @@ function sendRegistration(login, password) {
   connection.emit('registration', { login, password });
 }
 
-// ## Input handling
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-rl.setPrompt('> ');
-rl.prompt();
-
 const commandHandlers = {
-  disconnect: function() {
-    sendDisconnect();
-    rl.setPrompt('> ');
-  },
+
   login: function(login, password) {
     credentials = { login, password };
     sendLogin();
   },
 
-  showDetails: function() {
-    console.log(credentials);
+  logout: function() {
+    sendDisconnect();
+    rl.setPrompt('> ');
   },
 
   register: function(login, password) {
     sendRegistration(login, password);
+  },
+
+  showDetails: function() {
+    console.log(credentials);
   }
+
 }
 
 rl.on('line', function(line) {
