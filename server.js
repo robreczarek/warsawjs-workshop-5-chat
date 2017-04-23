@@ -8,7 +8,7 @@ var config = yaml.safeLoad(fs.readFileSync('./config/server.yaml', 'utf8'));
 const io = require('socket.io')(config.socketPort);
 const ChatServer = require('./lib/ChatServer');
 const Authentication = require('./lib/LevelAuthentication');
-const authentication = new Authentication({ path: __dirname + '/users.db'})
+const authentication = new Authentication({ path: __dirname + '/leveldb/users.db'})
 
 // Create server instance and start
 const server = new ChatServer({ io, authentication });

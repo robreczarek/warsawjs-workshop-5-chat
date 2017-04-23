@@ -29,6 +29,10 @@ lib-cov
 ######################
 db.json
 
+# Level DB file #
+######################
+leveldb
+
 # Logs and databases #
 ######################
 *.log
